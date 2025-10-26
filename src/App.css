@@ -1124,6 +1124,14 @@ body {
     gap: 40px;
   }
   
+  .about-visual {
+    order: -1;
+  }
+  
+  .memory-box-photo {
+    width: 280px;
+  }
+  
   .skills-grid {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -1278,5 +1286,57 @@ body {
   
   .url-content {
     font-size: 12px;
+  }
+  
+  /* About section mobile responsive */
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    text-align: center;
+  }
+  
+  .about-images {
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .about-img-1,
+  .about-img-2 {
+    width: 120px;
+    height: 160px;
+  }
+  
+  .memory-box-photo {
+    width: 250px;
+    margin: 0 auto;
+  }
+  
+  /* Skills section mobile */
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .skill-photo {
+    width: 200px;
+    height: 250px;
+    margin: 0 auto;
+  }
+  
+  .skill-card {
+    padding: 25px;
+    transform: rotate(0deg);
+  }
+  
+  /* Social media grid mobile */
+  .social-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    max-width: 300px;
+  }
+  
+  .social-button {
+    padding: 15px 20px;
+    font-size: 14px;
   }
 }
