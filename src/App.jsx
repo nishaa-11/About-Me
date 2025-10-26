@@ -131,25 +131,26 @@ function App() {
       <section className={`section about-section ${currentSection === 1 ? 'active' : ''}`}>
         <div className="about-content">
           <div className="about-text">
-            <h2>My passion and love that brought me to the media world.</h2>
+            <h2>ABOUT ME</h2>
             <p>
-              I'm 20 years old, and I've always loved creativity and storytelling. 
-              By the time I see it is IT, and that's where YouTube became a 
-              big part of my life.
+              ☆ Hi, I’m Nisha, a 19-year-old Computer Science Engineering student at BMSIT with a passion for software development and everything tech.<br></br>
+              ☆ I love exploring how technology works and enjoy experimenting with design tools to bring creative ideas to life.<br></br>
+              ☆ When I’m not coding, you’ll probably find me making crafts, playing games, or trying out new recipes.
             </p>
             <div className="about-images">
-              <div className="image-placeholder about-img-1">
-                <span>About Image 1</span>
+              <div className="about-img-1">
+                <img src="/about2.jpg" alt="About Image 1" className="about-image" />
               </div>
-              <div className="image-placeholder about-img-2">
-                <span>About Image 2</span>
+              <div className="about-img-2">
+                <img src="/jpeg(6).jpeg" alt="About Image 2" className="about-image" />
               </div>
             </div>
             <p className="highlight-text">
-              After watching my videos inspired more audiences with a story.
-              More than the fun YouTube videos, I built tools to help businesses and 
-              people use audience for pretty visuals.
+              Doomscrolling Final boss
             </p>
+          </div>
+          <div className="about-visual">
+            <img src="/memory_box.png" alt="Memory Box Photo" className="memory-box-photo" />
           </div>
         </div>
       </section>
