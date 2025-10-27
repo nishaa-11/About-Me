@@ -1,3 +1,6 @@
+/* Google Fonts Import for consistent cross-platform fonts */
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Caveat:wght@400;700&family=Fredoka+One&family=Bubblegum+Sans&display=swap');
+
 /* Global styles */
 * {
   margin: 0;
@@ -159,6 +162,16 @@ body {
   .section {
     padding: 60px 15px 80px 15px;
   }
+  
+  /* Ensure Nisha font consistency on mobile */
+  .hero-section .name-word.nisha,
+  .hero-section .name-word.b {
+    font-family: 'Fredoka One', 'Bubblegum Sans', system-ui, -apple-system, sans-serif !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 /* Hero Section */
@@ -224,8 +237,8 @@ body {
 .hero-section .name-word.nisha,
 .hero-section .name-word.b {
   color: #e91e63;
-  font-family: 'Comic Sans MS', 'Kalam', 'Caveat', 'Dancing Script', cursive;
-  font-weight: bold;
+  font-family: 'Fredoka One', 'Bubblegum Sans', 'Kalam', 'Comic Sans MS', Impact, Arial Black, sans-serif;
+  font-weight: 400;
   transform: rotate(-2deg);
   text-shadow: 
     2px 2px 0px #fff,
@@ -235,6 +248,7 @@ body {
   animation: bounceInDown 1s ease-out 1.2s both, doodleWiggle 3s ease-in-out infinite;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-style: normal !important;
 }
 
 /* Screaming animation for Nisha */
