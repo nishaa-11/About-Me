@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './App.css'
 
 function App() {
-  const [currentSection, setCurrentSection] = useState(0)
+  const [activeSection, setActiveSection] = useState('home')
   const [envelopeOpen, setEnvelopeOpen] = useState(false)
   const [letterVisible, setLetterVisible] = useState(false)
   const [message, setMessage] = useState('')
@@ -15,12 +15,21 @@ function App() {
   const [hearts, setHearts] = useState([])
 
   const sections = [
-    'Home',
-    'About',
-    'Interest',
-    'Scrapbook',
-    'Contact'
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'interest', label: 'Interest' },
+    { id: 'scrapbook', label: 'Scrapbook' },
+    { id: 'contact', label: 'Contact' }
   ]
+
+  // Refs for sections
+  const sectionRefs = {
+    home: useRef(null),
+    about: useRef(null),
+    interest: useRef(null),
+    scrapbook: useRef(null),
+    contact: useRef(null)
+  }
 
   // Array of images - add up to 5 images here
   const heroImages = [
@@ -30,6 +39,51 @@ function App() {
     '/slide3.jpg', // Replaced with actual image paths
     '/slide5.jpg'  // Replaced with actual image paths
   ]
+
+  // Smooth scroll to section
+  const scrollToSection = (sectionId) => {
+    const element = sectionRefs[sectionId].current
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
+  }
+
+  // Intersection Observer to track active section
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-50% 0px -50% 0px',
+      threshold: 0
+    }
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id)
+        }
+      })
+    }
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions)
+
+    // Observe all sections
+    Object.values(sectionRefs).forEach(ref => {
+      if (ref.current) {
+        observer.observe(ref.current)
+      }
+    })
+
+    return () => {
+      Object.values(sectionRefs).forEach(ref => {
+        if (ref.current) {
+          observer.unobserve(ref.current)
+        }
+      })
+    }
+  }, [])
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % heroImages.length)
@@ -170,21 +224,23 @@ function App() {
 
   return (
     <div className="app">
-      {/* Navigation - Show on all sections */}
-      <nav className="section-nav">
-        {sections.map((section, index) => (
-          <button
-            key={section}
-            className={`section-nav-btn ${currentSection === index ? 'active' : ''}`}
-            onClick={() => setCurrentSection(index)}
-          >
-            {section.charAt(0).toUpperCase() + section.slice(1)}
-          </button>
-        ))}
+      {/* Fixed Navigation Bar */}
+      <nav className="navbar">
+        <div className="nav-container">
+          {sections.map((section) => (
+            <button
+              key={section.id}
+              className={`nav-btn ${activeSection === section.id ? 'active' : ''}`}
+              onClick={() => scrollToSection(section.id)}
+            >
+              {section.label}
+            </button>
+          ))}
+        </div>
       </nav>
 
       {/* Home Section */}
-      <section className={`section hero-section ${currentSection === 0 ? 'active' : ''}`}>
+      <section id="home" ref={sectionRefs.home} className="section hero-section">
         <div className="hero-content">
           <div className="floating-text">
             <span className="greeting">Please dont go bald</span>
@@ -236,7 +292,7 @@ function App() {
       </section>
 
       {/* About Section */}
-      <section className={`section about-section ${currentSection === 1 ? 'active' : ''}`}>
+      <section id="about" ref={sectionRefs.about} className="section about-section">
         <div className="about-content">
           <div className="about-text">
             <h2>ABOUT ME</h2>
@@ -270,7 +326,7 @@ function App() {
       </section>
 
       {/* Skills Section */}
-      <section className={`section skills-section ${currentSection === 2 ? 'active' : ''}`}>
+      <section id="interest" ref={sectionRefs.interest} className="section skills-section">
         <div className="skills-content">
           <div className="skills-grid">
             <div className="skill-card">
@@ -300,10 +356,10 @@ function App() {
       </section>
 
       {/* Scrapbook Section (Intentionally left empty) */}
-      <section className={`section scrapbook-section ${currentSection === 3 ? 'active' : ''}`}></section>
+      <section id="scrapbook" ref={sectionRefs.scrapbook} className="section scrapbook-section"></section>
 
       {/* Contact Section */}
-      <section className={`section contact-section ${currentSection === 4 ? 'active' : ''}`}>
+      <section id="contact" ref={sectionRefs.contact} className="section contact-section">
         <div className="contact-content">
           <div className="lets-connect">
             <h1 className="connect-title">Let's Connect</h1>
