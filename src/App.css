@@ -453,14 +453,47 @@ body {
 }
 
 .memory-box-photo {
-  width: 300px;
+  width: 340px; /* slightly bigger */
   height: auto;
+  max-width: 100%;
   border-radius: 15px;
   transition: transform 0.3s ease;
 }
 
 .memory-box-photo:hover {
   transform: scale(1.05);
+}
+
+/* Heart rain overlay */
+.heart-rain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.heart-emoji {
+  position: absolute;
+  top: -15vh; /* start a bit higher so it clearly falls through the whole screen */
+  animation: heartFall 5s linear forwards;
+  color: #e91e63; /* pink star */
+  filter: drop-shadow(0 2px 4px rgba(233, 30, 99, 0.35));
+}
+
+@keyframes heartFall {
+  0% {
+    transform: translateY(-15vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  95% {
+    opacity: 1; /* stay visible until the very end */
+  }
+  100% {
+    transform: translateY(120vh) translateX(var(--sway, 0px)) rotate(720deg);
+    opacity: 1; /* keep visible at bottom edge */
+  }
 }
 
 .about-text h2 {
@@ -725,6 +758,13 @@ body {
   border: 3px solid #7dd4aa;
 }
 
+/* Discord style (green like GitHub) */
+.social-button.discord {
+  background: linear-gradient(45deg, #7dd4aa, #5fb885);
+  color: white;
+  border: 3px solid #7dd4aa;
+}
+
 .social-button.linkedin {
   background: linear-gradient(45deg, #e91e63, #f06292);
   color: white;
@@ -737,13 +777,16 @@ body {
   border: 3px solid #7dd4aa;
 }
 
+.social-button.spotify {
+  background: linear-gradient(45deg, #7dd4aa, #5fb885);
+  color: white;
+  border: 3px solid #7dd4aa;
+}
+
 .social-button.email {
   background: linear-gradient(45deg, #e91e63, #f06292);
   color: white;
   border: 3px solid #e91e63;
-  grid-column: 1 / -1;
-  max-width: 250px;
-  margin: 0 auto;
 }
 
 /* Hover effects */
@@ -760,11 +803,19 @@ body {
   box-shadow: 0 8px 25px rgba(125, 212, 170, 0.4);
 }
 
+.social-button.discord:hover {
+  box-shadow: 0 8px 25px rgba(125, 212, 170, 0.4);
+}
+
 .social-button.linkedin:hover {
   box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
 }
 
 .social-button.github:hover {
+  box-shadow: 0 8px 25px rgba(125, 212, 170, 0.4);
+}
+
+.social-button.spotify:hover {
   box-shadow: 0 8px 25px rgba(125, 212, 170, 0.4);
 }
 
@@ -1129,7 +1180,7 @@ body {
   }
   
   .memory-box-photo {
-    width: 280px;
+    width: 300px; /* up from 280px */
   }
   
   .skills-grid {
@@ -1307,7 +1358,7 @@ body {
   }
   
   .memory-box-photo {
-    width: 250px;
+    width: 280px; /* up from 250px */
     margin: 0 auto;
   }
   
@@ -1340,3 +1391,789 @@ body {
     font-size: 14px;
   }
 }
+
+/* Scrapbook Page - intentionally blank */
+.scrapbook-section {
+  background: transparent;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.scrapbook-container { display: none; }
+
+/* Book Structure - Hardcover Style (no spiral) */
+.book-wrapper {
+  position: relative;
+  width: 450px;
+  height: 600px;
+  margin: 0 auto;
+  transform-style: preserve-3d;
+  transition: transform 2s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.book-wrapper.opening {
+  transform: rotateX(-5deg) rotateY(-10deg) scale(1.05);
+}
+
+/* Closed Book Styles */
+.book-cover {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.book-cover:hover {
+  transform: rotateY(-5deg) rotateX(2deg) translateZ(10px);
+}
+
+/* Hardcover Base */
+.book-base {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f8f9fb 0%, #e6ebef 100%);
+  border-radius: 8px;
+  transform: translateZ(-25px);
+  box-shadow: 
+    0 0 0 6px rgba(233, 30, 99, 0.15),
+    0 0 0 12px rgba(233, 30, 99, 0.1),
+    0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+/* Inner Pages Stack (no holes) */
+.book-pages-stack {
+  position: absolute;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  top: 5px;
+  left: 5px;
+  background: #fafafa;
+  border-radius: 6px;
+  transform: translateZ(-20px);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Remove spiral holes */
+.book-pages-stack::before { content: none; }
+
+/* Remove spiral binding */
+.book-spine { display: none; }
+
+/* Front Cover */
+.book-front {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ffffff 0%, #f3f4f7 100%);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(233, 30, 99, 0.15);
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transition: transform 2s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.book-wrapper.opening .book-front {
+  transform: rotateY(-160deg);
+}
+
+/* Notebook Cover Pattern */
+
+.book-front::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at top left, rgba(255,255,255,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(0,0,0,0.1) 0%, transparent 50%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Book shadow that appears during opening */
+.book-wrapper::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 30px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.3) 0%, transparent 70%);
+  transition: all 2s cubic-bezier(0.23, 1, 0.320, 1);
+  opacity: 0.5;
+}
+
+.book-wrapper.opening::after {
+  width: 120%;
+  opacity: 0.8;
+  transform: translateX(-50%) scale(1.2);
+}
+
+.book-title h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  margin-bottom: 10px;
+  font-family: 'Georgia', serif;
+  text-align: center;
+  font-weight: 600;
+}
+
+.book-underline {
+  width: 150px;
+  height: 2px;
+  background: #34495e;
+  margin: 15px auto;
+  border-radius: 1px;
+}
+
+.book-subtitle {
+  font-size: 1rem;
+  color: rgba(44, 62, 80, 0.8);
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.open-book-btn {
+  background: rgba(52, 73, 94, 0.1);
+  border: 2px solid #34495e;
+  color: #2c3e50;
+  padding: 12px 25px;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.open-book-btn:hover {
+  background: #34495e;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(52, 73, 94, 0.3);
+}
+
+.book-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Clean Two-Page Book Spread - OPEN IS DOUBLE WIDTH */
+.book-spread-container {
+  width: 900px; /* double the closed width */
+  height: 600px;
+  margin: 0 auto;
+  position: relative;
+  animation: spreadOpen 1s ease-out;
+}
+
+@keyframes spreadOpen {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Simple Close Button */
+.close-book-simple {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(233, 30, 99, 0.1);
+  border: none;
+  color: #e91e63;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+
+.close-book-simple:hover {
+  background: #e91e63;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Open Book Spread */
+.open-book-spread {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 20px 60px rgba(233, 30, 99, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  border: 2px solid rgba(233, 30, 99, 0.1);
+  perspective: 1600px;
+  transform-style: preserve-3d;
+}
+
+/* Individual Pages in Spread */
+.spread-page {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  background: 
+    linear-gradient(45deg, transparent 24%, rgba(255,255,255,.05) 25%, rgba(255,255,255,.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05) 76%, transparent 77%),
+    linear-gradient(-45deg, transparent 24%, rgba(255,255,255,.05) 25%, rgba(255,255,255,.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05) 76%, transparent 77%);
+  background-size: 20px 20px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.left-spread-page {
+  border-right: 1px solid #ddd;
+}
+
+.right-spread-page {
+  border-left: 1px solid #ddd;
+}
+
+/* Page Flip Animation for Spread */
+.spread-page.page-flipping {
+  animation: spreadPageFlip 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@keyframes spreadPageFlip {
+  0% { transform: rotateY(0deg); box-shadow: none; }
+  40% { transform: rotateY(-110deg); box-shadow: -20px 0 40px rgba(0,0,0,0.15); }
+  60% { transform: rotateY(-110deg); box-shadow: -20px 0 40px rgba(0,0,0,0.18); }
+  100% { transform: rotateY(0deg); box-shadow: none; }
+}
+
+/* Center Binding */
+.book-binding-center {
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, #e91e63, #c2185b, #e91e63);
+  box-shadow: 
+    inset 0 0 10px rgba(233, 30, 99, 0.3),
+    0 0 5px rgba(233, 30, 99, 0.2);
+}
+
+/* Overlay Arrow Navigation */
+.page-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #e91e63;
+  opacity: 0.8;
+  transition: background 0.25s ease, opacity 0.25s ease, transform 0.1s ease;
+}
+
+.page-arrow.left {
+  left: 0;
+  background: linear-gradient(to right, rgba(233, 30, 99, 0.08), transparent);
+}
+
+.page-arrow.right {
+  right: 0;
+  background: linear-gradient(to left, rgba(233, 30, 99, 0.08), transparent);
+}
+
+.page-arrow:hover:not(:disabled) {
+  opacity: 1;
+  background: rgba(233, 30, 99, 0.12);
+}
+
+.page-arrow:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.page-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.page-arrow svg {
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+/* Empty Page */
+.empty-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(233, 30, 99, 0.4);
+  font-style: italic;
+  font-size: 1.2rem;
+}
+
+/* Page Content - Updated for Spread */
+.spread-page .page-content-wrapper {
+  padding: 30px;
+  height: 100%;
+  position: relative;
+}
+
+.spread-page .page-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.spread-page .page-header h2 {
+  color: #e91e63;
+  font-size: 1.6rem;
+  font-family: 'Georgia', serif;
+  margin-bottom: 10px;
+}
+
+.spread-page .page-content {
+  position: relative;
+  height: calc(100% - 80px);
+  width: 100%;
+}
+
+.spread-page .add-content-hint {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: rgba(233, 30, 99, 0.6);
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+/* Simple Navigation removed (replaced by overlay arrows) */
+
+.notebook-open-content .close-book {
+  background: #34495e;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.notebook-open-content .close-book:hover {
+  background: #2c3e50;
+  transform: translateY(-1px);
+}
+
+.notebook-open-content .page-counter {
+  background: rgba(52, 73, 94, 0.1);
+  color: #34495e;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.book-pages {
+  position: relative;
+  height: calc(100% - 80px);
+  display: flex;
+  align-items: center;
+  perspective: 1500px;
+  perspective-origin: center center;
+}
+
+/* Book Spread Layout - Notebook Size */
+.notebook-open-content .book-spread {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin: 0 10px;
+  position: relative;
+}
+
+/* Left Page (Static) */
+.page-left {
+  width: 50%;
+  height: 100%;
+  background: 
+    linear-gradient(45deg, transparent 24%, rgba(255,255,255,.05) 25%, rgba(255,255,255,.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05) 76%, transparent 77%),
+    linear-gradient(-45deg, transparent 24%, rgba(255,255,255,.05) 25%, rgba(255,255,255,.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05) 76%, transparent 77%);
+  background-size: 20px 20px;
+  border: 2px solid #f0f0f0;
+  border-radius: 10px 0 0 10px;
+  border-right: 1px solid #ddd;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Spiral holes for left page */
+.page-left::before {
+  content: '';
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  width: 15px;
+  height: calc(100% - 60px);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 10px,
+    #95a5a6 10px,
+    #95a5a6 16px,
+    transparent 16px,
+    transparent 30px
+  );
+  border-radius: 8px;
+}
+
+/* Right Page (Animated) */
+.page-right {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.page-right.page-flipping {
+  transform: rotateY(-180deg);
+}
+
+/* Page Front and Back */
+.page-front,
+.page-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(45deg, transparent 24%, rgba(255,255,255,.05) 25%, rgba(255,255,255,.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05) 76%, transparent 77%),
+    linear-gradient(-45deg, transparent 24%, rgba(255,255,255,.05) 25%, rgba(255,255,255,.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05) 76%, transparent 77%);
+  background-size: 20px 20px;
+  border: 2px solid #f0f0f0;
+  border-radius: 0 10px 10px 0;
+  border-left: 1px solid #ddd;
+  overflow: hidden;
+  backface-visibility: hidden;
+  box-shadow: 
+    0 0 20px rgba(0,0,0,0.1),
+    inset -5px 0 10px rgba(0,0,0,0.05);
+}
+
+/* Spiral holes for right pages */
+.page-front::before,
+.page-back::before {
+  content: '';
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  width: 15px;
+  height: calc(100% - 60px);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 10px,
+    #95a5a6 10px,
+    #95a5a6 16px,
+    transparent 16px,
+    transparent 30px
+  );
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.page-front {
+  z-index: 2;
+}
+
+.page-back {
+  transform: rotateY(180deg);
+  z-index: 1;
+  background: 
+    linear-gradient(45deg, transparent 24%, rgba(255,255,255,.08) 25%, rgba(255,255,255,.08) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.08) 75%, rgba(255,255,255,.08) 76%, transparent 77%),
+    linear-gradient(-45deg, transparent 24%, rgba(255,255,255,.08) 25%, rgba(255,255,255,.08) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.08) 75%, rgba(255,255,255,.08) 76%, transparent 77%);
+}
+
+/* Page Content Wrapper */
+.page-content-wrapper {
+  padding: 30px;
+  padding-left: 45px; /* Space for spiral holes */
+  height: 100%;
+  position: relative;
+}
+
+/* Enhanced Page Flip Shadow */
+.page-right::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(to left, rgba(0,0,0,0.3), transparent);
+  z-index: 3;
+  transition: width 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+  pointer-events: none;
+}
+
+.page-right.page-flipping::before {
+  width: 50px;
+}
+
+/* Page curl effect during flip */
+.page-right::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(135deg, transparent 45%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.3) 55%, transparent 60%);
+  z-index: 4;
+  transition: width 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+  pointer-events: none;
+}
+
+.page-right.page-flipping::after {
+  width: 100%;
+}
+
+/* Page Navigation Overlays - Notebook */
+.notebook-open-content .page-nav {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  transition: all 0.3s ease;
+}
+
+.notebook-open-content .left-page-nav {
+  left: 0;
+  background: linear-gradient(to right, rgba(52, 73, 94, 0.1), transparent);
+}
+
+.notebook-open-content .right-page-nav {
+  right: 0;
+  background: linear-gradient(to left, rgba(52, 73, 94, 0.1), transparent);
+}
+
+.notebook-open-content .page-nav:hover {
+  background: rgba(52, 73, 94, 0.2);
+}
+
+.notebook-open-content .nav-hint {
+  color: #34495e;
+  font-weight: 600;
+  font-size: 0.8rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.notebook-open-content .page-nav:hover .nav-hint {
+  opacity: 1;
+}
+
+/* Page Content Styling */
+.page-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.page-header h2 {
+  color: #e91e63;
+  font-size: 2rem;
+  font-family: 'Georgia', serif;
+  margin-bottom: 10px;
+}
+
+.page-content {
+  position: relative;
+  height: calc(100% - 100px);
+  width: 100%;
+}
+
+.scrapbook-item {
+  position: absolute;
+  transition: all 0.3s ease;
+}
+
+.scrapbook-item:hover {
+  transform: scale(1.1) !important;
+  z-index: 5;
+}
+
+.scrapbook-text {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border: 2px solid currentColor;
+  font-family: 'Comic Sans MS', cursive;
+  white-space: nowrap;
+}
+
+.scrapbook-image-placeholder {
+  width: 100%;
+  height: 150px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  border: 3px solid white;
+  position: relative;
+  overflow: hidden;
+}
+
+.scrapbook-image-placeholder::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: rotate(45deg);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.add-content-hint {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #999;
+  font-style: italic;
+}
+
+.add-content-hint p {
+  margin: 5px 0;
+}
+
+/* Mobile Responsive - MAINTAINING BOOK SIZE */
+@media (max-width: 768px) {
+  .book-cover {
+    width: 300px;
+    height: 450px;
+  }
+  
+  .book-title h1 {
+    font-size: 2rem;
+  }
+  
+  .book-spread-container {
+    width: 350px; /* mobile-friendly width */
+    height: 500px;
+  }
+  
+  .open-book-spread {
+    flex-direction: column;
+  }
+  
+  .spread-page {
+    height: 50%;
+    flex: none;
+  }
+  
+  .book-binding-center {
+    width: 100%;
+    height: 3px;
+  }
+  
+  .spread-page .page-content-wrapper {
+    padding: 15px;
+  }
+  
+  .spread-page .page-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .spread-page .page-content {
+    height: calc(100% - 60px);
+  }
+  
+  .scrapbook-text {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+  
+  .scrapbook-image-placeholder {
+    height: 80px;
+  }
+  
+  .page-arrow {
+    width: 48px;
+  }
+}
+
+/* Enhanced flip shadows for right page */
+.right-spread-page::before,
+.right-spread-page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  pointer-events: none;
+  transition: width 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.right-spread-page::before {
+  background: linear-gradient(to left, rgba(0,0,0,0.25), rgba(0,0,0,0));
+  z-index: 2;
+}
+
+.right-spread-page::after {
+  background: linear-gradient(135deg, transparent 45%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.35) 55%, transparent 60%);
+  z-index: 3;
+}
+
+.right-spread-page.page-flipping::before { width: 70px; }
+.right-spread-page.page-flipping::after { width: 100%; }
