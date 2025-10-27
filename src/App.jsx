@@ -13,6 +13,7 @@ function App() {
   const [isFlipping, setIsFlipping] = useState(false)
   const [isHeartRain, setIsHeartRain] = useState(false)
   const [hearts, setHearts] = useState([])
+  const [isNishaScreaming, setIsNishaScreaming] = useState(false)
 
   const sections = [
     { id: 'home', label: 'Home' },
@@ -222,6 +223,15 @@ function App() {
   setTimeout(() => setIsHeartRain(false), 5000)
   }
 
+  // Nisha scream animation handler
+  const handleNishaClick = () => {
+    if (!isNishaScreaming) {
+      setIsNishaScreaming(true)
+      // Reset after animation completes
+      setTimeout(() => setIsNishaScreaming(false), 1200)
+    }
+  }
+
   return (
     <div className="app">
       {/* Fixed Navigation Bar */}
@@ -249,7 +259,12 @@ function App() {
           <div className="name-display">
             <span className="name-word this">This</span>
             <span className="name-word is">is</span>
-            <span className="name-word nisha">Nisha</span>
+            <span 
+              className={`name-word nisha ${isNishaScreaming ? 'screaming' : ''}`}
+              onClick={handleNishaClick}
+            >
+              Nisha
+            </span>
             <span className="name-word b">☆ </span>
           </div>
           <div className="title-container">
@@ -332,9 +347,9 @@ function App() {
             <div className="skill-card">
               <h3>Video Editing</h3>
               <div className="skill-details">
-                <p>Content creating and editing</p>
-                <p>I do social media editing long, edit growth, and interactive video editing</p>
-                <p>Popular media user</p>
+                <p>fill content</p>
+                <p>add text later</p>
+                <p>xyz</p>
               </div>
             </div>
             <div className="image-placeholder skill-photo">
@@ -342,7 +357,7 @@ function App() {
             </div>
           </div>
           <div className="tagline">
-            <h2>It's not just editing, it's vibing with visuals.</h2>
+            <h2>blah blah blah.</h2>
             <div className="stats-images">
               <div className="image-placeholder stat-img-1">
                 <span>Stats Image 1</span>
